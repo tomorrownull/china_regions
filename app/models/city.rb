@@ -2,7 +2,7 @@
 
 class City < ActiveRecord::Base
   
-  attr_accessible :name, :province_id, :level, :zip_code, :name_en, :name_abbr
+ 
   
   belongs_to :province
   has_many :districts, dependent: :destroy
