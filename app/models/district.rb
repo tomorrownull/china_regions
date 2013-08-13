@@ -2,7 +2,7 @@
 
 class District < ActiveRecord::Base
 	
-  attr_accessible :name, :city_id, :name_en, :name_abbr
+ 
   
 	belongs_to :city
 
