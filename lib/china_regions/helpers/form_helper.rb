@@ -9,12 +9,18 @@ module ChinaRegions
 
         html_options[:class] ? 
           (html_options[:class].prepend('region_select ')) : 
-            (html_options[:class] = 'region_select')
+          (html_options[:class] = 'region_select')
             
         if Array === methods
           methods.each_with_index do |method, index|
             if region_klass = method.to_s.classify.safe_constantize
-              choices = (index == 0 ? region_klass.scoped.collect {|p| [ p.name, p.id ] } : [])
+              choices =  if index==0
+                region_klass.scoped.collect {|p| [ p.name, p.id ] } 
+              else
+                region_klass.where("#{methods.at(index - 1)}_id"=> self.instance_variable_get("@#{object}").send("#{ methods.at(index - 1).to_s}_id")).collect {|p| [ p.name, p.id ] } 
+ 
+              end
+         
               next_method = methods.at(index + 1)
               
               set_options(method, options, region_klass)
@@ -86,6 +92,7 @@ module ChinaRegions
                   $.each(data, function(index, value) {
                     targetDom.append("<option value='" + value.id + "'>" + value.name + "</option>");
                   });
+                 targetDom.trigger('change');
                 })
               }
             });
