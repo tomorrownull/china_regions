@@ -15,7 +15,7 @@ module ChinaRegions
           methods.each_with_index do |method, index|
             if region_klass = method.to_s.classify.safe_constantize
               choices =  if index==0
-                region_klass.scoped.collect {|p| [ p.name, p.id ] } 
+                region_klass.all.collect {|p| [ p.name, p.id ] } 
               else
                 region_klass.where("#{methods.at(index - 1)}_id"=> self.instance_variable_get("@#{object}").send("#{ methods.at(index - 1).to_s}_id")).collect {|p| [ p.name, p.id ] } 
  
